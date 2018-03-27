@@ -6,68 +6,36 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 iris = load_iris()
-number_of_experiments = 10000
+number_of_experiments = 1000
 
-results = []
+def train_classifier(number_of_experiments, **options):
+    results = []
 
-for i in range(0, number_of_experiments):
-    clf_gini = tree.DecisionTreeClassifier(criterion='gini')
+    for i in range(0, number_of_experiments):
+        clf = tree.DecisionTreeClassifier(**options)
 
-    X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target)
+        X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target)
 
-    clf_gini = clf_gini.fit(X_train, y_train)
-    predicted = clf_gini.predict(X_test)
-    score = accuracy_score(y_test, predicted)
+        clf = clf.fit(X_train, y_train)
+        predicted = clf.predict(X_test)
+        score = accuracy_score(y_test, predicted)
 
-    results.append(score)
+        results.append(score)
 
-results_np = np.array(results)
-print "Criterion = 'gini': ", np.mean(results_np)
+    return np.mean( np.array(results) )
 
-results = []
 
-for i in range(0, number_of_experiments):
-    clf = tree.DecisionTreeClassifier(criterion='entropy')
+result = train_classifier(number_of_experiments, criterion='gini')
+print "Criterion = 'gini': ", result
 
-    X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target)
+result = train_classifier(number_of_experiments, criterion='entropy')
+print "Criterion = 'entropy': ", result
 
-    clf = clf.fit(X_train, y_train)
-    predicted = clf.predict(X_test)
-    score = accuracy_score(y_test, predicted)
+result = train_classifier(number_of_experiments, max_depth=1)
+print "max_depth = 1: ", result
 
-    results.append(score)
+result = train_classifier(number_of_experiments, max_depth=2)
+print "max_depth = 2: ", result
 
-results_np = np.array(results)
-print "Criterion = 'entropy': ", np.mean(results_np)
-
-results = []
-
-for i in range(0, number_of_experiments):
-    clf = tree.DecisionTreeClassifier(max_depth=1)
-
-    X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target)
-
-    clf = clf.fit(X_train, y_train)
-    predicted = clf.predict(X_test)
-    score = accuracy_score(y_test, predicted)
-
-    results.append(score)
-
-results_np = np.array(results)
-print "max_depth = 1: ", np.mean(results_np)
-
-results = []
-
-for i in range(0, number_of_experiments):
-    clf = tree.DecisionTreeClassifier(max_depth=2)
-
-    X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target)
-
-    clf = clf.fit(X_train, y_train)
-    predicted = clf.predict(X_test)
-    score = accuracy_score(y_test, predicted)
-
-    results.append(score)
-
-results_np = np.array(results)
-print "max_depth = 2: ", np.mean(results_np)
+result = train_classifier(number_of_experiments, max_depth=3)
+print "max_depth = 3: ", result
