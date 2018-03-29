@@ -1,5 +1,4 @@
 import numpy as np
-
 from sklearn import tree
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
@@ -8,7 +7,7 @@ from sklearn.metrics import accuracy_score
 iris = load_iris()
 number_of_experiments = 1000
 
-def train_classifier(number_of_experiments, **options):
+def train_tree_classifier(number_of_experiments, **options):
     results = []
 
     for i in range(0, number_of_experiments):
@@ -25,17 +24,17 @@ def train_classifier(number_of_experiments, **options):
     return np.mean( np.array(results) )
 
 
-result = train_classifier(number_of_experiments, criterion='gini')
+result = train_tree_classifier(number_of_experiments, criterion='gini')
 print "Criterion = 'gini': ", result
 
-result = train_classifier(number_of_experiments, criterion='entropy')
+result = train_tree_classifier(number_of_experiments, criterion='entropy')
 print "Criterion = 'entropy': ", result
 
-result = train_classifier(number_of_experiments, max_depth=1)
+result = train_tree_classifier(number_of_experiments, max_depth=1)
 print "max_depth = 1: ", result
 
-result = train_classifier(number_of_experiments, max_depth=2)
+result = train_tree_classifier(number_of_experiments, max_depth=2)
 print "max_depth = 2: ", result
 
-result = train_classifier(number_of_experiments, max_depth=3)
+result = train_tree_classifier(number_of_experiments, max_depth=3)
 print "max_depth = 3: ", result
