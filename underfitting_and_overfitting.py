@@ -17,9 +17,6 @@ degrees = [1, 4, 12]
 X = np.arange(0.05, 1, 0.1)
 y = true_fun(X) + np.random.randn(X.shape[0]) * 0.1
 
-print X
-print y
-
 plt.figure(figsize=(24, 5))
 for i in range(len(degrees)):
     polynomial_features = PolynomialFeatures(degree=degrees[i],

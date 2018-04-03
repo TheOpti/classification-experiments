@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 iris = load_iris()
-number_of_experiments = 1000
+number_of_experiments = 100
 
 def train_tree_classifier(number_of_experiments, **options):
     results = []
