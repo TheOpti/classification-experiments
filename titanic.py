@@ -1,25 +1,11 @@
 import numpy as np # linear algebra
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
-import matplotlib.pyplot as plt # data visualization
-import seaborn as sns
 
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
-
-plt.rc("font", size=14)
-sns.set(style="white")
-sns.set(style="whitegrid", color_codes=True)
-
-# sns.countplot(x='Embarked', data=train)
-# plt.show()
-#
-# sns.barplot('Sex', 'Survived', data=train, color="aquamarine")
-# plt.show()
-
-# print train.isnull().sum()
 
 print 'Load data'
 train = pd.read_csv("./data/titanic/titanic.csv")
@@ -88,7 +74,7 @@ print 'Training ada boost...'
 
 ada_boost_results = []
 for i in range(0, 100):
-    clf = AdaBoostClassifier(DecisionTreeClassifier(),algorithm="SAMME",n_estimators=200)
+    clf = AdaBoostClassifier()
 
     X_train, X_test, y_train, y_test = train_test_split(train_data_X, train_data_Y)
 
