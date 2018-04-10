@@ -1,7 +1,10 @@
 import pandas as pd
+import seaborn as sns
 import matplotlib.pyplot as plt
 
-iris = pd.read_csv("./data/iris/iris.csv")
+iris = pd.read_csv('./data/iris/iris.csv')
+
+print iris['Species'].value_counts()
 
 iris.drop('Id', axis=1, inplace=True)
 grouped_by_species = iris.groupby('Species')
@@ -41,7 +44,29 @@ for type in types:
         ax.set_xlabel(species + ' length (cm)')
         ax.set_ylabel(species + 'width (cm)')
 
-    ax.legend(plot_types, ["Iris Setosa", "Iris Versicolor", "Iris Virginica"], loc=2)
-    figure.savefig("./visualizations/" + type + ".png", bbox_inches='tight')
+    ax.legend(plot_types, ['Iris Setosa', 'Iris Versicolor', 'Iris Virginica'], loc=2)
+    figure.savefig('./visualizations/' + type + '_all' + '.png', bbox_inches='tight')
 
+sns.set(style='white')
+sns.set(style='whitegrid', color_codes=True)
+plt.clf()
 
+print 'Petal length boxplot'
+sns.boxplot(x='Species', y='PetalLengthCm', data=iris)
+plt.savefig('./visualizations/petal_length.png')
+plt.clf()
+
+print 'Petal width boxplot'
+sns.boxplot(x='Species', y='PetalWidthCm', data=iris)
+plt.savefig('./visualizations/petal_width.png')
+plt.clf()
+
+print 'Sepal length boxplot'
+sns.boxplot(x='Species', y='SepalLengthCm', data=iris)
+plt.savefig('./visualizations/sepal_length.png')
+plt.clf()
+
+print 'Sepal width boxplot'
+sns.boxplot(x='Species', y='SepalWidthCm', data=iris)
+plt.savefig('./visualizations/sepal_width.png')
+plt.clf()
