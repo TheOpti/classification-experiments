@@ -1,11 +1,12 @@
 import numpy as np # linear algebra
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
-
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import AdaBoostClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.model_selection import GridSearchCV
 
 print 'Load data'
 train = pd.read_csv("./data/titanic/titanic.csv")
@@ -42,48 +43,72 @@ final_train_data = pd.get_dummies(train_data_2, columns=["embarked"])
 train_data_X = final_train_data[final_train_data.columns.difference(['survived'])]
 train_data_Y = final_train_data['survived']
 
-print 'Training trees...'
+X_train, X_test, y_train, y_test = train_test_split(train_data_X, train_data_Y)
 
-tree_results = []
-for i in range(0, 100):
-    clf = DecisionTreeClassifier()
+tree_param_grid = {
+    'criterion': ['gini', 'entropy'],
+    'splitter': ['best', 'random'],
+    'max_depth': np.arange(2, 8),
+}
 
-    X_train, X_test, y_train, y_test = train_test_split(train_data_X, train_data_Y)
+tree = GridSearchCV(DecisionTreeClassifier(), tree_param_grid)
 
-    clf = clf.fit(X_train, y_train)
-    predicted = clf.predict(X_test)
-    score = accuracy_score(y_test, predicted)
+tree.fit(X_train, y_train)
+tree_preds = tree.predict(X_test)
+tree_performance = accuracy_score(y_test, tree_preds)
 
-    tree_results.append(score)
+print '\nDecision tree:'
+print 'Best params: ', tree.best_params_
+print 'Best scores: ', tree.best_score_
+print 'My score: ', tree_performance
 
-print 'Training random forests...'
+forest_param_grid = {
+    'n_estimators': np.arange(10, 26, 2),
+    'criterion': ['gini', 'entropy'],
+    'max_depth': np.arange(2, 8),
+    'bootstrap': [True, False]
+}
 
-forest_results = []
-for i in range(0, 100):
-    clf = RandomForestClassifier()
+random_forest = GridSearchCV(RandomForestClassifier(), forest_param_grid)
 
-    X_train, X_test, y_train, y_test = train_test_split(train_data_X, train_data_Y)
+random_forest.fit(X_train, y_train)
+random_forest_preds = random_forest.predict(X_test)
+random_forest_performance = accuracy_score(y_test, random_forest_preds)
 
-    clf = clf.fit(X_train, y_train)
-    predicted = clf.predict(X_test)
-    score = accuracy_score(y_test, predicted)
+print '\nRandom forest:'
+print 'Best params: ', random_forest.best_params_
+print 'Best scores: ', random_forest.best_score_
+print 'My score: ', random_forest_performance
 
-    forest_results.append(score)
+ada_boost_param_grid = {
+    'base_estimator': [DecisionTreeClassifier()],
+    'n_estimators': np.arange(30, 200, 4)
+}
 
-print 'Training ada boost...'
+ada_boost = GridSearchCV(AdaBoostClassifier(), ada_boost_param_grid)
 
-ada_boost_results = []
-for i in range(0, 100):
-    clf = AdaBoostClassifier()
+ada_boost.fit(X_train, y_train)
+ada_boost_preds = ada_boost.predict(X_test)
+ada_boost_performance = accuracy_score(y_test, ada_boost_preds)
 
-    X_train, X_test, y_train, y_test = train_test_split(train_data_X, train_data_Y)
+print '\nAda Boost:'
+print 'Best params: ', ada_boost.best_params_
+print 'Best scores: ', ada_boost.best_score_
+print 'My score: ', ada_boost_performance
 
-    clf = clf.fit(X_train, y_train)
-    predicted = clf.predict(X_test)
-    score = accuracy_score(y_test, predicted)
+gradient_boost_param_grid = {
+    'loss': ['deviance'],
+    'n_estimators': np.arange(50, 200, 4),
+    'criterion': ['friedman_mse', 'mse', 'mae']
+}
 
-    ada_boost_results.append(score)
+gradient_boost = GridSearchCV(GradientBoostingClassifier(), gradient_boost_param_grid)
 
-print "Score [decision tree]: ", np.mean( np.array(tree_results) )
-print "Score [random forest]: ", np.mean( np.array(forest_results) )
-print "Score [ada boost]: ", np.mean( np.array(ada_boost_results) )
+gradient_boost.fit(X_train, y_train)
+gradient_preds = gradient_boost.predict(X_test)
+gradient_performance = accuracy_score(y_test, gradient_preds)
+
+print '\nGradientBoostingClassifier:'
+print 'Best params: ', gradient_boost.best_params_
+print 'Best scores: ', gradient_boost.best_score_
+print 'My score: ', gradient_performance
