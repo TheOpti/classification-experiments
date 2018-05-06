@@ -40,9 +40,9 @@ for type in types:
             c=colors[idx])
         )
 
-        ax.set_title(species + ' size from Iris dataset', fontsize=14)
-        ax.set_xlabel(species + ' length (cm)')
-        ax.set_ylabel(species + 'width (cm)')
+        ax.set_title(type + ' size from Iris dataset', fontsize=14)
+        ax.set_xlabel(type + ' length (cm)')
+        ax.set_ylabel(type + 'width (cm)')
 
     ax.legend(plot_types, ['Iris Setosa', 'Iris Versicolor', 'Iris Virginica'], loc=2)
     figure.savefig('./visualizations/' + type + '_all' + '.png', bbox_inches='tight')
