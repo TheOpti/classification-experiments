@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from sklearn.model_selection import learning_curve
+from sklearn.model_selection import learning_curve, validation_curve
+
 
 def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None,
                         n_jobs=1, train_sizes=np.linspace(.1, 1.0, 5)):
@@ -67,6 +68,53 @@ def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None,
              label="Training score")
     plt.plot(train_sizes, test_scores_mean, 'o-', color="g",
              label="Cross-validation score")
+
+    plt.legend(loc="best")
+    return plt
+
+
+def plot_validation_curve(estimator, title, X, y, param_name, param_range, ylim=None):
+    """
+    Generate a simple plot of the test and training validation curve.
+
+    Parameters
+    ----------
+    estimator : object type that implements the "fit" and "predict" methods
+        An object of that type which is cloned for each validation.
+
+    title : string
+        Title for the chart.
+
+    X : array-like, shape (n_samples, n_features)
+        Training vector, where n_samples is the number of samples and
+        n_features is the number of features.
+
+    y : array-like, shape (n_samples) or (n_samples, n_features), optional
+        Target relative to X for classification or regression;
+        None for unsupervised learning.
+    """
+    train_scores, test_scores = validation_curve(
+        estimator, X, y, param_name=param_name, param_range=param_range,
+        cv=10, scoring="accuracy", n_jobs=1)
+    train_scores_mean = np.mean(train_scores, axis=1)
+    train_scores_std = np.std(train_scores, axis=1)
+    test_scores_mean = np.mean(test_scores, axis=1)
+
+    plt.title(title)
+    plt.xlabel(param_name)
+    plt.ylabel("Score")
+    if ylim is not None:
+        plt.ylim(*ylim)
+    lw = 2
+    plt.grid()
+
+    plt.plot(param_range, train_scores_mean, 'o-', label="Training score",
+                 color="r", lw=lw)
+    plt.fill_between(param_range, train_scores_mean - train_scores_std,
+                     train_scores_mean + train_scores_std, alpha=0.2,
+                     color="r", lw=lw)
+    plt.plot(param_range, test_scores_mean, 'o-', label="Cross-validation score",
+                 color="g", lw=lw)
 
     plt.legend(loc="best")
     return plt

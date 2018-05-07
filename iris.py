@@ -8,7 +8,7 @@ from sklearn.ensemble import AdaBoostClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.model_selection import GridSearchCV
 import matplotlib.pyplot as plt
-from plot_learning_curve import plot_learning_curve
+from plot_learning_curve import plot_learning_curve, plot_validation_curve
 
 print 'Load data'
 iris = load_iris()
@@ -18,23 +18,36 @@ tree_param_grid = {
     'criterion': ['gini', 'entropy'],
     'splitter': ['best', 'random'],
     'max_depth': np.arange(2, 8),
+    'min_samples_split': np.arange(2, 5),
+    'min_samples_leaf': [1, 2, 3]
 }
 
-tree = GridSearchCV(DecisionTreeClassifier(), tree_param_grid)
-
+tree = GridSearchCV(DecisionTreeClassifier(), tree_param_grid, verbose=1)
 tree.fit(X_train, y_train)
-tree_preds = tree.predict(X_test)
-tree_performance = accuracy_score(y_test, tree_preds)
+
+best = tree.best_estimator_
+best.fit(X_train, y_train)
+best_preds = best.predict(X_test)
+best_performance = accuracy_score(y_test, best_preds)
 
 print '\nDecision tree:'
 print 'Best params: ', tree.best_params_
-print 'Best scores: ', tree.best_score_
-print 'My score: ', tree_performance
+print 'Best score: ', tree.best_score_
+print 'My best score: ', best_performance
 
-print 'Plot learning curves...'
-title = 'Decision tree - Learning Curves'
+print 'Learning curve plotting...'
+title = 'Decision tree - Learning curve'
 plot_learning_curve(tree, title, iris.data, iris.target)
-plt.savefig('./visualizations/learning_curve_iris_decision_tree.png')
+plt.savefig('./visualizations/iris_tree_learning.png')
+plt.clf()
+
+for param in tree_param_grid:
+    print 'Validation curve for ' + param + ' plotting...'
+    title = 'Decision tree - Validation curve (' + param + ')'
+    plot_validation_curve(best, title, iris.data, iris.target, param, tree_param_grid[param])
+    plt.savefig('./visualizations/iris_tree_validation_' + param + '.png')
+    plt.clf()
+
 
 forest_param_grid = {
     'n_estimators': np.arange(10, 26, 2),
@@ -44,22 +57,32 @@ forest_param_grid = {
 }
 
 random_forest = GridSearchCV(RandomForestClassifier(), forest_param_grid, verbose=1)
-
 random_forest.fit(X_train, y_train)
-random_forest_preds = random_forest.predict(X_test)
-random_forest_performance = accuracy_score(y_test, random_forest_preds)
+
+best = random_forest.best_estimator_
+best.fit(X_train, y_train)
+best_preds = best.predict(X_test)
+best_performance = accuracy_score(y_test, best_preds)
 
 print '\nRandom forest:'
 print 'Best params: ', random_forest.best_params_
-print 'Best scores: ', random_forest.best_score_
-print 'My score: ', random_forest_performance
+print 'Best score: ', random_forest.best_score_
+print 'My best core: ', best_performance
 
-print 'Plot learning curves...'
-title = 'Random forest - Learning Curves'
+print 'Learning curve plotting...'
+title = 'Random forest - Learning curve'
 plot_learning_curve(random_forest, title, iris.data, iris.target)
-plt.savefig('./visualizations/learning_curve_iris_random_forest.png')
+plt.savefig('./visualizations/iris_forest_learning.png')
+plt.clf()
 
+for param in forest_param_grid:
+    print 'Validation curve for ' + param + ' plotting...'
+    title = 'Random forest - Validation curve (' + param + ')'
+    plot_validation_curve(best, title, iris.data, iris.target, param, forest_param_grid[param])
+    plt.savefig('./visualizations/iris_forest_validation_' + param + '.png')
+    plt.clf()
 
+'''
 ada_boost_param_grid = {
     'base_estimator': [DecisionTreeClassifier()],
     'n_estimators': np.arange(30, 200, 4)
@@ -102,3 +125,4 @@ print 'Plot learning curves...'
 title = 'Gradient Boosting - Learning Curves'
 plot_learning_curve(gradient_boost, title, iris.data, iris.target)
 plt.savefig('./visualizations/learning_curve_iris_gradient_boosting.png')
+'''
