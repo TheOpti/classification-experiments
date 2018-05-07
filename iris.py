@@ -7,6 +7,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.model_selection import GridSearchCV
+import matplotlib.pyplot as plt
+from plot_learning_curve import plot_learning_curve
 
 print 'Load data'
 iris = load_iris()
@@ -29,6 +31,11 @@ print 'Best params: ', tree.best_params_
 print 'Best scores: ', tree.best_score_
 print 'My score: ', tree_performance
 
+print 'Plot learning curves...'
+title = 'Decision tree - Learning Curves'
+plot_learning_curve(tree, title, iris.data, iris.target)
+plt.savefig('./visualizations/learning_curve_iris_decision_tree.png')
+
 forest_param_grid = {
     'n_estimators': np.arange(10, 26, 2),
     'criterion': ['gini', 'entropy'],
@@ -36,7 +43,7 @@ forest_param_grid = {
     'bootstrap': [True, False]
 }
 
-random_forest = GridSearchCV(RandomForestClassifier(), forest_param_grid)
+random_forest = GridSearchCV(RandomForestClassifier(), forest_param_grid, verbose=1)
 
 random_forest.fit(X_train, y_train)
 random_forest_preds = random_forest.predict(X_test)
@@ -46,6 +53,12 @@ print '\nRandom forest:'
 print 'Best params: ', random_forest.best_params_
 print 'Best scores: ', random_forest.best_score_
 print 'My score: ', random_forest_performance
+
+print 'Plot learning curves...'
+title = 'Random forest - Learning Curves'
+plot_learning_curve(random_forest, title, iris.data, iris.target)
+plt.savefig('./visualizations/learning_curve_iris_random_forest.png')
+
 
 ada_boost_param_grid = {
     'base_estimator': [DecisionTreeClassifier()],
@@ -63,6 +76,11 @@ print 'Best params: ', ada_boost.best_params_
 print 'Best scores: ', ada_boost.best_score_
 print 'My score: ', ada_boost_performance
 
+print 'Plot learning curves...'
+title = 'Ada Boost - Learning Curves'
+plot_learning_curve(ada_boost, title, iris.data, iris.target)
+plt.savefig('./visualizations/learning_curve_iris_ada_boost.png')
+
 gradient_boost_param_grid = {
     'loss': ['deviance'],
     'n_estimators': np.arange(50, 200, 4),
@@ -79,3 +97,8 @@ print '\nGradientBoostingClassifier:'
 print 'Best params: ', gradient_boost.best_params_
 print 'Best scores: ', gradient_boost.best_score_
 print 'My score: ', gradient_performance
+
+print 'Plot learning curves...'
+title = 'Gradient Boosting - Learning Curves'
+plot_learning_curve(gradient_boost, title, iris.data, iris.target)
+plt.savefig('./visualizations/learning_curve_iris_gradient_boosting.png')
