@@ -61,12 +61,12 @@ np.set_printoptions(precision=2)
 
 # Plot non-normalized confusion matrix
 plt.figure()
-plot_confusion_matrix(cnf_matrix, classes=class_names,
-                      title='Confusion matrix, without normalization')
+plot_confusion_matrix(cnf_matrix, classes=class_names, title='Confusion matrix')
+plt.savefig('./visualizations/confusion_matrix.png')
+plt.clf()
 
 # # Plot normalized confusion matrix
-# plt.figure()
-# plot_confusion_matrix(cnf_matrix, classes=class_names, normalize=True,
-#                       title='Normalized confusion matrix')
-#
-plt.savefig('./visualizations/confusion_matrix.png')
+plt.figure()
+plot_confusion_matrix(cnf_matrix, classes=class_names, normalize=True, title='Confusion matrix - normalized')
+plt.savefig('./visualizations/confusion_matrix_normalized.png')
+plt.clf()
