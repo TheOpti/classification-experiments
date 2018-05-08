@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, classification_report
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import AdaBoostClassifier
@@ -35,17 +35,20 @@ print 'Best params: ', tree.best_params_
 print 'Best score: ', tree.best_score_
 print 'My best score: ', best_performance
 
+print 'Classification report:'
+print(classification_report(y_test, best_preds, target_names=iris.target_names))
+
 print 'Learning curve plotting...'
 title = 'Decision tree - Learning curve'
 plot_learning_curve(tree, title, iris.data, iris.target)
-plt.savefig('./visualizations/iris_tree_learning.png')
+plt.savefig('./visualizations/iris_tree_learning_curve.png')
 plt.clf()
 
 for param in tree_param_grid:
     print 'Validation curve for ' + param + ' plotting...'
     title = 'Decision tree - Validation curve (' + param + ')'
     plot_validation_curve(best, title, iris.data, iris.target, param, tree_param_grid[param])
-    plt.savefig('./visualizations/iris_tree_validation_' + param + '.png')
+    plt.savefig('./visualizations/iris_tree_validation_curve' + param + '.png')
     plt.clf()
 
 
@@ -68,6 +71,9 @@ print '\nRandom forest:'
 print 'Best params: ', random_forest.best_params_
 print 'Best score: ', random_forest.best_score_
 print 'My best core: ', best_performance
+
+print 'Classification report:'
+print(classification_report(y_test, best_preds, target_names=iris.target_names))
 
 print 'Learning curve plotting...'
 title = 'Random forest - Learning curve'
