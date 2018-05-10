@@ -13,7 +13,7 @@ print 'Load data'
 iris = load_iris()
 X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target)
 class_names = iris.target_names
-
+'''
 tree_param_grid = {
     'criterion': ['gini', 'entropy'],
     'splitter': ['best', 'random'],
@@ -105,10 +105,10 @@ title = 'Random forest - Learning curve'
 plot_learning_curve(random_forest, title, iris.data, iris.target)
 plt.savefig('./visualizations/iris_forest_learning.png')
 plt.clf()
-
+'''
 
 ada_boost_param_grid = {
-    'n_estimators': np.arange(20, 120, 4),
+    'n_estimators': np.arange(12, 52, 4),
     'learning_rate': [1, 1.5, 2.0, 2.5, 3.0]
 }
 
@@ -143,8 +143,9 @@ for param in ada_boost_param_grid:
     plot_validation_curve(best, title, iris.data, iris.target, param, ada_boost_param_grid[param])
     plt.savefig('./visualizations/iris_ada_boost_validation_' + param + '.png')
     plt.clf()
-
+'''
 print 'Learning curve plotting...'
 title = 'Ada Boost - Learning Curves'
 plot_learning_curve(ada_boost, title, iris.data, iris.target)
 plt.savefig('./visualizations/iris_ada_boost_learning_curve.png')
+'''
