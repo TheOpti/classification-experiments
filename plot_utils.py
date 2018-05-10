@@ -97,7 +97,6 @@ def plot_validation_curve(estimator, title, X, y, param_name, param_range, ylim=
         estimator, X, y, param_name=param_name, param_range=param_range,
         cv=10, scoring="accuracy", n_jobs=1)
     train_scores_mean = np.mean(train_scores, axis=1)
-    train_scores_std = np.std(train_scores, axis=1)
     test_scores_mean = np.mean(test_scores, axis=1)
 
     plt.title(title)
@@ -108,14 +107,8 @@ def plot_validation_curve(estimator, title, X, y, param_name, param_range, ylim=
     lw = 2
     plt.grid()
 
-    plt.plot(param_range, train_scores_mean, 'o-', label="Training score",
-                 color="r", lw=lw)
-    plt.fill_between(param_range, train_scores_mean - train_scores_std,
-                     train_scores_mean + train_scores_std, alpha=0.2,
-                     color="r", lw=lw)
-    plt.plot(param_range, test_scores_mean, 'o-', label="Cross-validation score",
-                 color="g", lw=lw)
-
+    plt.plot(param_range, train_scores_mean, 'o-', label="Training score", color="r", lw=lw)
+    plt.plot(param_range, test_scores_mean, 'o-', label="Cross-validation score", color="g", lw=lw)
     plt.legend(loc="best")
     return plt
 
@@ -131,8 +124,6 @@ def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix'
     else:
         print('Confusion matrix, without normalization')
 
-    print(cm)
-
     plt.imshow(cm, interpolation='nearest', cmap=cmap)
     plt.title(title)
     plt.colorbar()
@@ -146,7 +137,6 @@ def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix'
         plt.text(j, i, format(cm[i, j], fmt),
                  horizontalalignment="center",
                  color="white" if cm[i, j] > thresh else "black")
-
 
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
