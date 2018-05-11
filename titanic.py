@@ -43,10 +43,11 @@ final_train_data = pd.get_dummies(train_data_2, columns=["embarked"])
 
 train_data_X = final_train_data[final_train_data.columns.difference(['survived'])]
 train_data_Y = final_train_data['survived']
-class_names=['Survived', 'Not survived']
+class_names = ['Survived', 'Not survived']
 
 X_train, X_test, y_train, y_test = train_test_split(train_data_X, train_data_Y)
-'''
+
+
 tree_param_grid = {
     'criterion': ['gini', 'entropy'],
     'splitter': ['best', 'random'],
@@ -92,7 +93,7 @@ title = 'Decision tree - Learning curve'
 plot_learning_curve(tree, title, train_data_X, train_data_Y,)
 plt.savefig('./visualizations/titanic_tree_learning_curve.png')
 plt.clf()
-'''
+
 
 forest_param_grid = {
     'n_estimators': np.arange(10, 26, 2),
@@ -178,6 +179,6 @@ for param in ada_boost_param_grid:
     plt.clf()
 
 print 'Learning curve plotting...'
-title = 'Ada Boost - Learning Curves'
+title = 'Ada Boost - Learning Curve'
 plot_learning_curve(ada_boost, title, train_data_X, train_data_Y)
 plt.savefig('./visualizations/titanic_ada_boost_learning_curve.png')
