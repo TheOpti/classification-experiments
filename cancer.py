@@ -30,7 +30,7 @@ tree_param_grid = {
     'min_samples_leaf': [1, 2, 3]
 }
 
-tree = GridSearchCV(DecisionTreeClassifier(), tree_param_grid, verbose=0)
+tree = GridSearchCV(DecisionTreeClassifier(), tree_param_grid)
 tree.fit(X_train, y_train)
 
 best = tree.best_estimator_
@@ -75,8 +75,8 @@ forest_param_grid = {
     'max_depth': np.arange(2, 8),
     'bootstrap': [True, False]
 }
-gi
-random_forest = GridSearchCV(RandomForestClassifier(), forest_param_grid, verbose=1)
+
+random_forest = GridSearchCV(RandomForestClassifier(), forest_param_grid)
 random_forest.fit(X_train, y_train)
 
 best = random_forest.best_estimator_
@@ -120,7 +120,7 @@ ada_boost_param_grid = {
     'learning_rate': [1, 1.5, 2.0, 2.5, 3.0]
 }
 
-ada_boost = GridSearchCV(AdaBoostClassifier(), ada_boost_param_grid, verbose=1)
+ada_boost = GridSearchCV(AdaBoostClassifier(), ada_boost_param_grid)
 ada_boost.fit(X_train, y_train)
 
 best = ada_boost.best_estimator_
