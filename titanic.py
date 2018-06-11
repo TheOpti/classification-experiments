@@ -9,6 +9,11 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.model_selection import GridSearchCV
 
+import os
+
+if not os.path.exists('visualizations'):
+    os.makedirs('visualizations')
+
 print 'Load data'
 train = pd.read_csv("./data/titanic/titanic.csv")
 train_data = train.copy()

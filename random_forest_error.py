@@ -4,6 +4,11 @@ from sklearn.datasets import load_wine, load_digits
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import cross_val_score
 
+import os
+
+if not os.path.exists('visualizations'):
+    os.makedirs('visualizations')
+
 np.random.seed(1000)
 nb_classifications = 100
 

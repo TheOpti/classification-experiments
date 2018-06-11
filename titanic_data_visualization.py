@@ -3,6 +3,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+import os
+
+if not os.path.exists('visualizations'):
+    os.makedirs('visualizations')
+
 titanic = pd.read_csv("./data/titanic/titanic.csv")
 
 titanic['travel_buds'] = titanic["sibsp"] + titanic["parch"]

@@ -1,6 +1,10 @@
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import os
+
+if not os.path.exists('visualizations'):
+    os.makedirs('visualizations')
 
 iris = pd.read_csv('./data/iris/iris.csv')
 

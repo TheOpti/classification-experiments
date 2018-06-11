@@ -7,7 +7,11 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.model_selection import GridSearchCV
 import matplotlib.pyplot as plt
+import os
 from plot_utils import plot_learning_curve, plot_validation_curve, plot_confusion_matrix
+
+if not os.path.exists('visualizations'):
+    os.makedirs('visualizations')
 
 print 'Load data'
 iris = load_iris()

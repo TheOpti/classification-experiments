@@ -1,10 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
 from sklearn import svm, datasets
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 from plot_utils import plot_confusion_matrix
+
+if not os.path.exists('visualizations'):
+    os.makedirs('visualizations')
 
 # import some data to play with
 data = datasets.load_iris()
